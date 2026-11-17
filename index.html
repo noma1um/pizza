@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <title>PIZZA — Qishki bayram buyurtma platformasi</title>
+    <meta name="description" content="PIZZA: eng mazali pitsalar, qishki aksiyalar va tezkor yetkazib berish.">
+    <style>
+        :root {
+            --bg: #0A0A0A;
+            --br: #2b1a10;
+            --gold: #e8b450;
+            --or: #ff6a1a;
+            --tx: #f6ede1;
+            --mu: #b8a78f;
+            --gl: rgba(255, 255, 255, .07);
+            --bd: rgba(255, 255, 255, .14);
+            color-scheme: dark;
+            box-sizing: border-box;
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px)
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 90px
+        }
+
+        body {
+            background: radial-gradient(ellipse at 50% 0, #2b1a10, #0A0A0A 60%) fixed;
+            color: var(--tx);
+            font: 16px/1.5 system-ui, "Segoe UI", sans-serif
+        }
+
+        button,
+        input,
+        select {
+            font: inherit;
+            color: inherit
+        }
+
+        button {
+            cursor: pointer;
+            border: 0;
+            background: none
+        }
+
+        .gl {
+            background: var(--gl);
+            border: 1px solid var(--bd);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 18px
+        }
+
+        .btn {
+            padding: 12px 22px;
+            border-radius: 30px;
+            font-weight: 700;
+            transition: .25s
+        }
+
+        .or {
+            background: linear-gradient(135deg, #ff8a2a, #ff4d1a);
+            box-shadow: 0 6px 22px #ff6a1a66
+        }
+
+        .gh {
+            background: var(--gl);
+            border: 1px solid var(--bd)
+        }
+
+        .btn:hover {
+            transform: translateY(-2px)
+        }
+
+        .btn:active {
+            transform: scale(.96)
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--gold);
+            outline-offset: 2px
+        }
+
+        header {
+            position: sticky;
+            top: env(safe-area-inset-top, 0px);
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 8px 18px;
+            margin: 10px
+        }
+
+        .logo {
+            font: 900 26px Georgia, serif;
+            letter-spacing: 2px;
+            text-decoration: none;
+            background: linear-gradient(#fff3b0, #e8b450 50%, #b8631a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            filter: drop-shadow(0 0 10px #ff9a2a88) drop-shadow(0 3px 0 #6b3510)
+        }
+
+        nav {
+            display: flex;
+            gap: 16px;
+            margin-left: auto
+        }
+
+        nav a {
+            color: var(--mu);
+            text-decoration: none
+        }
+
+        nav a:hover {
+            color: var(--gold)
+        }
+
+        .ic {
+            background: var(--gl);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            position: relative;
+            font-size: 18px
+        }
+
+        .bd {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: var(--or);
+            border-radius: 10px;
+            font-size: 12px;
+            padding: 0 6px
+        }
+
+        @media(max-width:760px) {
+            nav {
+                order: 9;
+                width: 100%;
+                overflow-x: auto;
+                gap: 14px;
+                margin: 0
+            }
+
+            header .ic:first-of-type {
+                margin-left: auto
+            }
+        }
+
+        section {
+            padding: 60px 5vw
+        }
+
+        h2 {
+            font: 800 32px Georgia, serif;
+            color: var(--gold);
+            margin-bottom: 14px
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            gap: 30px;
+            align-items: center;
+            min-height: 78vh
+        }
+
+        @media(max-width:760px) {
+            .hero {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .hero h1 {
+            font: 900 clamp(38px, 6vw, 68px)/1.05 Georgia, serif;
+            margin-bottom: 14px
+        }
+
+        .hero p {
+            color: var(--mu);
+            margin-bottom: 22px;
+            max-width: 480px
+        }
+
+        .big svg {
+            width: 100%;
+            max-width: 440px;
+            animation: fl 6s ease-in-out infinite;
+            filter: drop-shadow(0 20px 40px #ff6a1a55)
+        }
+
+        @keyframes fl {
+            50% {
+                transform: translateY(-14px) rotate(4deg)
+            }
+        }
+
+        .chips {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 4px 0 8px
+        }
+
+        .chip {
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: var(--gl);
+            border: 1px solid var(--bd);
+            white-space: nowrap
+        }
+
+        .chip.on {
+            background: var(--or)
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 18px;
+            margin-top: 16px
+        }
+
+        .card {
+            padding: 16px;
+            transition: .3s;
+            position: relative
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px #ff6a1a33
+        }
+
+        .card svg,
+        .card .em {
+            width: 100%;
+            height: 170px
+        }
+
+        .em {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 90px
+        }
+
+        .st {
+            color: var(--gold)
+        }
+
+        .mu {
+            color: var(--mu);
+            font-size: 14px
+        }
+
+        .old {
+            text-decoration: line-through;
+            color: var(--mu);
+            font-size: 14px
+        }
+
+        .tag {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: var(--or);
+            border-radius: 10px;
+            padding: 2px 10px;
+            font-size: 12px;
+            font-weight: 700;
+            z-index: 1
+        }
+
+        .fav {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 22px
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px
+        }
+
+        #q {
+            max-width: 360px
+        }
+
+        #intro {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: radial-gradient(circle at 50% 30%, #3a2012, #0A0A0A 70%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 60px 16px 30px;
+            overflow: auto;
+            transition: opacity .8s;
+            text-align: center
+        }
+
+        #intro.out {
+            opacity: 0;
+            pointer-events: none
+        }
+
+        #intro .logo {
+            font-size: clamp(60px, 14vw, 130px);
+            line-height: 1
+        }
+
+        .fo {
+            position: absolute;
+            font-size: 34px;
+            opacity: .5;
+            animation: fl 5s ease-in-out infinite
+        }
+
+        .pc {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            justify-content: center
+        }
+
+        .pr {
+            width: 200px;
+            padding: 12px;
+            text-align: center;
+            position: relative;
+            animation: up .8s both
+        }
+
+        .pr svg {
+            width: 90px;
+            height: 90px
+        }
+
+        .pr .em {
+            font-size: 60px
+        }
+
+        @keyframes up {
+            from {
+                opacity: 0;
+                transform: translateY(30px)
+            }
+        }
+
+        .bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--or), var(--gold));
+            width: 0;
+            animation: ld 6s linear forwards
+        }
+
+        @keyframes ld {
+            to {
+                width: 100%
+            }
+        }
+
+        #skip {
+            position: absolute;
+            top: calc(14px + env(safe-area-inset-top, 0px));
+            right: 16px
+        }
+
+        .sm {
+            position: absolute;
+            left: 3vw;
+            bottom: 8vh;
+            width: 100px
+        }
+
+        @media(max-width:900px) {
+            .sm {
+                display: none
+            }
+        }
+
+        #snow {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 102
+        }
+
+        #dr {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100%;
+            width: min(420px, 100%);
+            z-index: 60;
+            transform: translateX(105%);
+            transition: .4s;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            background: rgba(14, 9, 6, .92);
+            border-radius: 18px 0 0 18px
+        }
+
+        #dr.on {
+            transform: none
+        }
+
+        #dl {
+            flex: 1;
+            overflow: auto
+        }
+
+        .li {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin: 10px 0
+        }
+
+        .th {
+            width: 52px;
+            height: 52px;
+            flex: none
+        }
+
+        .th svg {
+            width: 52px;
+            height: 52px
+        }
+
+        .th .em {
+            font-size: 32px;
+            height: 52px
+        }
+
+        .q {
+            display: flex;
+            align-items: center;
+            gap: 4px
+        }
+
+        .q button {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--gl)
+        }
+
+        #md {
+            position: fixed;
+            inset: 0;
+            z-index: 70;
+            background: #000a;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 14px
+        }
+
+        #md.on {
+            display: flex
+        }
+
+        #mb {
+            max-width: 560px;
+            width: 100%;
+            max-height: 92vh;
+            overflow: auto;
+            padding: 22px;
+            background: #17100b;
+            animation: up .3s
+        }
+
+        #mb h3,
+        #mb h4 {
+            margin: 10px 0 4px;
+            color: var(--gold)
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 12px;
+            background: #0006;
+            border: 1px solid var(--bd);
+            margin: 5px 0
+        }
+
+        input[type=radio],
+        input[type=checkbox] {
+            width: auto;
+            margin: 0
+        }
+
+        label.o {
+            display: inline-flex;
+            gap: 6px;
+            align-items: center;
+            padding: 6px 12px;
+            border: 1px solid var(--bd);
+            border-radius: 20px;
+            margin: 3px;
+            cursor: pointer
+        }
+
+        .li select {
+            width: auto;
+            max-width: 170px
+        }
+
+        .trk {
+            padding: 0
+        }
+
+        .trk li {
+            list-style: none;
+            padding: 8px 0;
+            color: var(--mu)
+        }
+
+        .trk li.d {
+            color: var(--gold)
+        }
+
+        .trk li.c {
+            color: #fff;
+            font-weight: 700
+        }
+
+        #ts {
+            position: fixed;
+            left: 50%;
+            bottom: 24px;
+            transform: translateX(-50%);
+            background: #1d130c;
+            border: 1px solid var(--gold);
+            padding: 10px 18px;
+            border-radius: 24px;
+            z-index: 110;
+            display: none
+        }
+
+        footer {
+            background: #000;
+            border-top: 1px solid var(--gold);
+            box-shadow: 0 -10px 40px #e8b45022;
+            padding: 50px 5vw 30px;
+            margin-top: 60px
+        }
+
+        .fg {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            margin-bottom: 28px
+        }
+
+        .n {
+            font: 800 34px Georgia;
+            color: var(--gold)
+        }
+
+        footer a,
+        footer button {
+            color: var(--mu);
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            padding: 2px 0
+        }
+
+        footer a:hover,
+        footer button:hover {
+            color: var(--gold)
+        }
+
+        .ph {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 14px;
+            filter: contrast(1.06) saturate(1.1);
+            display: block
+        }
+
+        .card .ph {
+            height: 170px
+        }
+
+        .pr .ph {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            margin: 0 auto
+        }
+
+        .big .hi {
+            width: 100%;
+            max-width: 480px;
+            height: auto;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            border-radius: 28px;
+            box-shadow: 0 20px 60px #ff6a1a55
+        }
+
+        .lg {
+            height: 28px;
+            width: 28px;
+            vertical-align: middle;
+            margin-right: 6px
+        }
+
+        .lg2 {
+            width: 90px;
+            height: 90px
+        }
+
+        @media(prefers-reduced-motion:reduce) {
+            * {
+                animation: none !important;
+                transition: none !important
+            }
+
+            html {
+                scroll-behavior: auto
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="snow"></canvas>
+    <div id="ts" role="status"></div>
+
+    <div id="intro" role="dialog" aria-label="Kirish animatsiyasi">
+        <button id="skip" class="btn gh" onclick="endIntro()">O‘tkazib yuborish ›</button>
+        <span class="fo" style="left:8%;top:18%">🍕</span><span class="fo"
+            style="right:10%;top:22%;animation-delay:-2s">🌿</span><span class="fo"
+            style="left:18%;bottom:22%;animation-delay:-1s">🧀</span><span class="fo"
+            style="right:16%;bottom:26%;animation-delay:-3s">🍅</span>
+        <img class="lg2" src="https://cdn-icons-png.flaticon.com/512/3595/3595455.png" alt="" onerror="this.remove()">
+        <div class="logo">PIZZA</div>
+        <div style="color:var(--gold)">Yangi yilgacha qoldi: <b id="cd"></b></div>
+        <div class="pc" id="ipc"></div>
+        <svg class="sm" viewBox="0 0 100 170" aria-hidden="true">
+            <circle cx="50" cy="132" r="32" fill="#eef6ff" />
+            <circle cx="50" cy="82" r="24" fill="#eef6ff" />
+            <circle cx="50" cy="42" r="17" fill="#eef6ff" />
+            <circle cx="44" cy="38" r="2" />
+            <circle cx="56" cy="38" r="2" />
+            <path d="M50 43l16 4-16 3z" fill="#ff7a1a" />
+            <rect x="32" y="56" width="36" height="8" rx="4" fill="#c1121f" />
+            <rect x="58" y="60" width="8" height="22" rx="3" fill="#c1121f" />
+        </svg>
+        <div class="bar"></div>
+    </div>
+
+    <header class="gl"><a class="logo" href="#top"><img class="lg"
+                src="https://cdn-icons-png.flaticon.com/512/3595/3595455.png" alt="" onerror="this.remove()">PIZZA</a>
+        <nav><a href="#top">Bosh sahifa</a><a href="#menu">Menyu</a><a href="#aksiya">Aksiyalar</a><a href="#about">Biz
+                haqimizda</a><a href="#ft">Kontakt</a></nav>
+        <button class="ic" aria-label="Qidiruv" onclick="location.hash='#menu';$('#q').focus()">🔍</button>
+        <button class="ic" aria-label="Profil" onclick="acct()">👤</button>
+        <button class="ic" aria-label="Savat" onclick="cart(1)">🛒<span class="bd" id="cb">0</span></button>
+    </header>
+
+    <main>
+        <section class="hero" id="top">
+            <div>
+                <h1>Eng mazali <span class="st">pitsalar!</span></h1>
+                <p>Pechda pishirilgan, cho‘ziluvchan pishloqli pitsalar. Qishki bayram aksiyalari bilan tezkor yetkazib
+                    berish.</p>
+                <a class="btn or" href="#menu" style="text-decoration:none;display:inline-block">Buyurtma berish</a>
+                <a class="btn gh" href="#aksiya" style="text-decoration:none;display:inline-block">Aksiyalarni
+                    ko‘rish</a>
+            </div>
+            <div class="big" id="hp"></div>
+        </section>
+
+        <section id="menu">
+            <h2>Menyu</h2>
+            <input id="q" placeholder="Pitsa qidirish…" aria-label="Qidiruv" oninput="rm()">
+            <div class="chips" id="cats"></div>
+            <div class="grid" id="mg"></div>
+        </section>
+
+        <section id="aksiya">
+            <h2>Aksiyalar</h2>
+            <p class="mu">Qishki bayram takliflari — 31-yanvargacha amal qiladi (namunaviy muddat). Promokodlar: <b
+                    class="st">PIZZA10</b> (−10%), <b class="st">WINTER20</b> (−20%), <b class="st">NEWYEAR</b> (−15%).
+            </p>
+            <div class="grid" id="ak"></div>
+        </section>
+
+        <section id="about">
+            <h2>Biz haqimizda</h2>
+            <div class="grid">
+                <div class="card gl">
+                    <h3 class="st">🔥 Tosh pechda</h3>
+                    <p class="mu">Har bir pitsa yuqori haroratli pechda, buyurtma bilan pishiriladi.</p>
+                </div>
+                <div class="card gl">
+                    <h3 class="st">🧀 Sifatli masalliq</h3>
+                    <p class="mu">Haqiqiy mozzarella, yangi rayhon va tanlangan go‘sht mahsulotlari.</p>
+                </div>
+                <div class="card gl">
+                    <h3 class="st">🚚 Tezkor yetkazish</h3>
+                    <p class="mu">Buyurtmangiz holatini real vaqt rejimida kuzatib boring.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="ft">
+        <div class="fg" id="fs"></div>
+        <div class="fg">
+            <div><b class="st">Filiallar</b>
+                <p class="mu">Chilonzor filiali — 10:00–23:00<br>+998 71 000 00 00</p>
+                <p class="mu">Yunusobod filiali — 10:00–23:00<br>+998 71 000 00 01</p>
+            </div>
+            <div><b class="st">Ijtimoiy tarmoqlar</b><a href="https://t.me/" target="_blank"
+                    rel="noopener">Telegram</a><a href="https://instagram.com/" target="_blank"
+                    rel="noopener">Instagram</a><a href="https://youtube.com/" target="_blank"
+                    rel="noopener">YouTube</a><a href="https://tiktok.com/" target="_blank" rel="noopener">TikTok</a>
+            </div>
+            <div><b class="st">Huquqiy ma‘lumotlar</b><button onclick="info('Foydalanish shartlari')">Foydalanish
+                    shartlari</button><button onclick="info('Maxfiylik siyosati')">Maxfiylik siyosati</button><button
+                    onclick="info('Yetkazib berish shartlari')">Yetkazib berish shartlari</button><button
+                    onclick="info('Mualliflik huquqi')">Mualliflik huquqi</button></div>
+        </div>
+        <p class="mu">Raqamlar, manzillar va telefonlar — namunaviy ma‘lumot. © PIZZA</p>
+    </footer>
+
+    <aside id="dr" aria-label="Savat">
+        <div class="row">
+            <h2 style="margin:0">Savat</h2><button class="ic" onclick="cart(0)" aria-label="Yopish">✕</button>
+        </div>
+        <div id="dl"></div>
+        <div class="row"><input id="pi" placeholder="Promokod"><button class="btn gh" onclick="ap()">Qo‘llash</button>
+        </div>
+        <div id="tt"></div><button class="btn or" onclick="co()">Rasmiylashtirish</button>
+    </aside>
+    <div id="md" onclick="if(event.target==this)closeMd()">
+        <div id="mb" class="gl" role="dialog"></div>
+    </div>
+
+    <script>
+        const $ = s => document.querySelector(s), fm = n => Math.round(n).toLocaleString("ru-RU") + " so‘m";
+        const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+        const ld = (k, f) => { try { return JSON.parse(localStorage.getItem(k)) ?? f } catch { return f } }, sv = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)) } catch { } };
+        const cats = ["Barcha pitsalar", "Klassik", "Go‘shtli", "Vegetarian", "Premium", "Achchiq", "Kombo", "Ichimliklar", "Desertlar"], NP = ["Kombo", "Ichimliklar", "Desertlar"];
+        const ST = ["Buyurtma qabul qilindi", "Tayyorlanmoqda", "Pechda pishirilmoqda", "Yetkazib beruvchiga topshirildi", "Yo‘lda", "Yetkazib berildi"], PC = { PIZZA10: .1, WINTER20: .2, NEWYEAR: .15 };
+        const M0 = [
+            { id: 1, n: "Margarita", c: "Klassik", i: "Pomidor sousi, mozzarella, rayhon", p: 59000, r: 5, v: 312, k: "#c0392b", t: "Mashhur" },
+            { id: 2, n: "Pepperoni", c: "Go‘shtli", i: "Pepperoni, mozzarella, pomidor sousi", p: 79000, o: 89000, r: 5, v: 540, k: "#b3261e" },
+            { id: 3, n: "To‘rt pishloq", c: "Premium", i: "Mozzarella, parmezan, gorgonzola, cheddar", p: 95000, r: 5, v: 208, k: "#e6c36a", t: "Yangi" },
+            { id: 4, n: "BBQ tovuq", c: "Go‘shtli", i: "Tovuq, BBQ sous, piyoz, mozzarella", p: 85000, r: 4, v: 176, k: "#a0522d" },
+            { id: 5, n: "Vegetarian", c: "Vegetarian", i: "Qo‘ziqorin, bolgar qalampiri, zaytun, pomidor", p: 69000, r: 4, v: 121, k: "#2e7d32" },
+            { id: 6, n: "Diavola", c: "Achchiq", i: "Salami, jalapeño, achchiq sous, mozzarella", p: 82000, r: 5, v: 233, k: "#8e1b10", t: "Achchiq 🌶" },
+            { id: 7, n: "Trufel", c: "Premium", i: "Trufel kremi, qo‘ziqorin, prosciutto, parmezan", p: 129000, r: 5, v: 98, k: "#6d4c41" },
+            { id: 8, n: "MEGA KOMBO", c: "Kombo", i: "3 ta pitsa + Coca-Cola", p: 202300, o: 289000, r: 5, v: 77, k: "#b3261e" },
+            { id: 9, n: "FAMILY SET", c: "Kombo", i: "2 ta pitsa + Coca-Cola", p: 149250, o: 199000, r: 5, v: 91, k: "#b3261e" },
+            { id: 10, n: "STUDENT COMBO", c: "Kombo", i: "Pitsa + Pepsi", p: 63200, o: 79000, r: 5, v: 164, k: "#b3261e" },
+            { id: 11, n: "Coca-Cola 1 l", c: "Ichimliklar", i: "Sovutilgan ichimlik", p: 12000, r: 5, v: 410, e: "🥤" },
+            { id: 12, n: "Pepsi 1 l", c: "Ichimliklar", i: "Sovutilgan ichimlik", p: 12000, r: 5, v: 362, e: "🥤" },
+            { id: 13, n: "Tiramisu", c: "Desertlar", i: "Mascarpone, kofe, kakao", p: 28000, r: 5, v: 88, e: "🍰" },
+            { id: 14, n: "Cheesecake", c: "Desertlar", i: "Nyu-York uslubida, mevali sous", p: 32000, r: 4, v: 73, e: "🧁" }];
+        let M = ld("pz_m", M0), C = ld("pz_c", []), O = ld("pz_o", []), F = ld("pz_f", []), PR = ld("pz_pr", ""), cat = cats[0], cur, u, d, tid = 0, ok = 0;
+        const pz = c => `<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="47" fill="#c68a3a"/><circle cx="50" cy="50" r="41" fill="#e8b04a"/><g fill="${c || "#b3261e"}">${[[35, 38], [60, 34], [48, 58], [68, 60], [30, 62], [52, 40]].map(p => `<circle cx="${p[0]}" cy="${p[1]}" r="7"/>`).join("")}</g><g fill="#3f8f3a"><circle cx="45" cy="48" r="3"/><circle cx="62" cy="47" r="3"/><circle cx="40" cy="72" r="3"/></g></svg>`;
+        const IM = { 1: "https://images.unsplash.com/photo-1579751626657-72bc17010498?w=1000", 2: "https://images.unsplash.com/photo-1628840042765-356cda07504e?w=1000", 3: "https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=1000", 4: "https://images.unsplash.com/photo-1594007654729-407eedc4be65?w=1000", 5: "https://images.pexels.com/photos/12046656/pexels-photo-12046656.jpeg?auto=compress&w=1200", 6: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Pizza_Diavolo.jpg", 7: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=1000", 8: "https://images.unsplash.com/photo-1716237388490-35c0489b9be4?auto=format&fit=crop&w=1200", 9: "https://images.pexels.com/photos/2381347/pexels-photo-2381347.jpeg?auto=compress&w=1200", 10: "https://images.pexels.com/photos/6068716/pexels-photo-6068716.jpeg?auto=compress&w=1200", 11: "https://images.unsplash.com/photo-1554866585-cd94860890b7?w=1000", 12: "https://images.unsplash.com/photo-1629203851122-3726ecdf080e?w=1000", 13: "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=1000", 14: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=1000" }, HERO = "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=1200";
+        const fb = p => p.e ? `<div class="em">${p.e}</div>` : pz(p.k), img = p => IM[p.id] ? `<img class="ph" src="${IM[p.id]}" alt="${esc(p.n)}" loading="lazy" onerror="imgFb(this,${p.id})">` : fb(p), pc = p => Math.round((1 - p.p / p.o) * 100);
+        function imgFb(el, id) { const t = document.createElement("div"); t.innerHTML = fb(M.find(x => x.id == id)); el.replaceWith(t.firstChild) }
+        function toast(t) { const e = $("#ts"); e.textContent = t; e.style.display = "block"; clearTimeout(toast.h); toast.h = setTimeout(() => e.style.display = "none", 2200) }
+        function md(h) { $("#mb").innerHTML = `<button class="ic" style="float:right" onclick="closeMd()" aria-label="Yopish">✕</button>` + h; $("#md").classList.add("on") }
+        function closeMd() { $("#md").classList.remove("on"); tid = 0 }
+        function info(t) { md(`<h3>${t}</h3><p class="mu">Namunaviy matn. Rasmiy hujjat matni shu yerga joylashtiriladi.</p>`) }
+        /* menyu */
+        const card = p => `<article class="card gl">${p.o ? `<span class="tag">-${pc(p)}%</span>` : p.t ? `<span class="tag">${p.t}</span>` : ""}<button class="fav" aria-label="Sevimli" onclick="fav(${p.id})">${F.includes(p.id) ? "❤️" : "🤍"}</button>${img(p)}<h3>${esc(p.n)}</h3><p class="mu">${esc(p.i)}</p><div class="st">${"★".repeat(p.r)}${"☆".repeat(5 - p.r)} <span class="mu">(${p.v})</span></div><div class="row"><div>${p.o ? `<div class="old">${fm(p.o)}</div>` : ""}<b>${fm(p.p)}</b></div><button class="btn or" onclick="${NP.includes(p.c) ? `add(${p.id})` : `opt(${p.id})`}">Savatga qo‘shish</button></div></article>`;
+        function rm() {
+            const q = $("#q").value.toLowerCase(); $("#cats").innerHTML = cats.map(c => `<button class="chip ${c == cat ? "on" : ""}" onclick="cat='${c}';rm()">${c}</button>`).join("");
+            const l = M.filter(p => (cat == cats[0] ? !NP.includes(p.c) : p.c == cat) && (p.n + p.i).toLowerCase().includes(q));
+            $("#mg").innerHTML = l.map(card).join("") || "<p class='mu'>Hech narsa topilmadi</p>";
+            $("#ak").innerHTML = M.filter(p => p.o).map(p => card(p).replace("</article>", `<p class="mu">Muddat: 31-yanvargacha</p></article>`)).join("")
+        }
+        function fav(id) { F = F.includes(id) ? F.filter(x => x != id) : [...F, id]; sv("pz_f", F); rm() }
+        /* sozlamalar */
+        function opt(id) {
+            cur = M.find(x => x.id == id); const rd = (n, v, l, ck) => `<label class="o"><input type="radio" name="${n}" value="${v}" data-n="${l}" ${ck ? "checked" : ""}>${l}</label>`, cb = (v, l) => `<label class="o"><input type="checkbox" name="ex" value="${v}" data-n="${l}">${l} +${fm(v)}</label>`;
+            md(`<h3>${esc(cur.n)}</h3><p class="mu">${esc(cur.i)}</p><b>Hajm</b><div>${[25, 30, 35].map((s, i) => `<label class="o"><input type="radio" name="sz" value="${i}" ${i == 1 ? "checked" : ""}>${s} sm</label>`).join("")}</div>
+<b>Xamir</b><div>${rd("cr", 0, "Yupqa xamir", 1)}${rd("cr", 8000, "Qalin xamir")}</div>
+<b>Qo‘shimchalar</b><div>${cb(12000, "Qo‘shimcha pishloq")}${cb(10000, "Pepperoni")}${cb(7000, "Qo‘ziqorin")}${cb(6000, "Zaytun")}${cb(6000, "Jalapeño")}</div>
+<b>Sous</b><div>${rd("sa", 0, "Pomidor", 1)}${rd("sa", 3000, "Ranch")}${rd("sa", 3000, "BBQ")}${rd("sa", 3000, "Achchiq")}</div>
+<div class="row"><b class="st" id="tp"></b><button class="btn or" onclick="addOpt()">Savatga qo‘shish</button></div>`); $("#mb").oninput = calc; calc()
+        }
+        function calc() {
+            const g = n => [...document.querySelectorAll(`#mb [name=${n}]:checked`)], s = +g("sz")[0].value, c = g("cr")[0], sa = g("sa")[0], ex = g("ex");
+            u = Math.round(cur.p * [1, 1.25, 1.5][s] / 1000) * 1000 + +c.value + +sa.value + ex.reduce((a, e) => a + +e.value, 0);
+            d = [[25, 30, 35][s] + " sm", c.dataset.n, sa.dataset.n + " sous", ...ex.map(e => e.dataset.n)].join(", "); $("#tp").textContent = fm(u)
+        }
+        function addOpt() { calc(); addItem({ k: cur.id + d, id: cur.id, n: cur.n, d, u, q: 1 }); closeMd() }
+        /* savat */
+        function addItem(it) { const x = C.find(c => c.k == it.k); x ? x.q++ : C.push(it); sv("pz_c", C); rc(); toast("Savatga qo‘shildi") }
+        function add(id) { const p = M.find(x => x.id == id); addItem({ k: "" + id, id, n: p.n, d: "", u: p.p, q: 1 }) }
+        const tot = pk => { const s = C.reduce((a, x) => a + x.u * x.q, 0), ds = Math.round(s * (PC[PR] || 0)), fe = s && s < 200000 && !pk ? 15000 : 0; return { s, ds, fe, t: s - ds + fe } };
+        function rc() {
+            const T = tot(); $("#cb").textContent = C.reduce((a, x) => a + x.q, 0);
+            $("#dl").innerHTML = C.map((x, i) => { const p = M.find(m => m.id == x.id); return `<div class="li"><div class="th">${p ? img(p) : ""}</div><div style="flex:1"><b>${esc(x.n)}</b><div class="mu">${esc(x.d)}</div><div class="st">${fm(x.u)}</div></div><div class="q"><button onclick="qt(${i},-1)" aria-label="Kamaytirish">−</button>${x.q}<button onclick="qt(${i},1)" aria-label="Oshirish">+</button><button onclick="C.splice(${i},1);sv('pz_c',C);rc()" aria-label="O‘chirish">🗑</button></div></div>` }).join("") || "<p class='mu'>Savat bo‘sh</p>";
+            $("#tt").innerHTML = `<p class="row"><span>Mahsulotlar</span><span>${fm(T.s)}</span></p><p class="row"><span>Promokod ${PR ? `(${PR})` : ""}</span><span>−${fm(T.ds)}</span></p><p class="row"><span>Yetkazib berish</span><span>${T.fe ? fm(T.fe) : "Bepul"}</span></p><p class="row"><b>Jami</b><b class="st">${fm(T.t)}</b></p>`
+        }
+        function qt(i, n) { C[i].q += n; if (C[i].q < 1) C.splice(i, 1); sv("pz_c", C); rc() }
+        function cart(f) { $("#dr").classList.toggle("on", !!f) }
+        function ap() { const c = $("#pi").value.trim().toUpperCase(); if (PC[c]) { PR = c; sv("pz_pr", c); rc(); toast("Promokod qo‘llandi") } else toast("Promokod noto‘g‘ri") }
+        /* checkout */
+        function co() {
+            if (!C.length) return toast("Savat bo‘sh"); cart(0); md(`<h3>Buyurtmani rasmiylashtirish</h3><input id="cn" placeholder="Ism va familiya"><input id="cp" type="tel" placeholder="Telefon: +998 90 123 45 67"><input id="ca" placeholder="Manzil (ko‘cha, uy, kvartira, izoh)">
+<div><label class="o"><input type="radio" name="dv" value="0" checked>Yetkazib berish</label><label class="o"><input type="radio" name="dv" value="1">Olib ketish</label></div>
+<b>To‘lov usuli</b><div>${["Payme", "Click", "Uzcard", "Humo"].map((x, i) => `<label class="o"><input type="radio" name="py" value="${x}" ${i ? "" : "checked"}>${x}</label>`).join("")}</div>
+<p class="mu">Test rejimi: haqiqiy to‘lov amalga oshirilmaydi.</p><p class="row"><b>Jami</b><b class="st">${fm(tot().t)}</b></p><button class="btn or" onclick="sbm()">Buyurtmani tasdiqlash</button>`)
+        }
+        function sbm() {
+            const n = $("#cn").value.trim(), p = $("#cp").value.replace(/\D/g, ""), a = $("#ca").value.trim(), pk = +document.querySelector("[name=dv]:checked").value;
+            if (n.length < 2) return toast("Ismni kiriting"); if (p.length < 9) return toast("Telefon raqami noto‘g‘ri"); if (!pk && a.length < 4) return toast("Manzilni kiriting");
+            const o = { id: "#" + (1001 + O.length), name: n, phone: p, addr: pk ? "Olib ketish" : a, pay: document.querySelector("[name=py]:checked").value, total: tot(pk).t, items: C, st: 0 };
+            O.push(o); sv("pz_o", O); C = []; PR = ""; sv("pz_c", C); sv("pz_pr", ""); rc(); trk(o.id)
+        }
+        function trk(id) { tid = id; const o = O.find(x => x.id == id); md(`<h3>Buyurtma ${o.id}</h3><p class="mu">Test rejimi: holatlar avtomatik simulyatsiya qilinadi.</p><ol class="trk">${ST.map((s, i) => `<li class="${i < o.st ? "d" : i == o.st ? "c" : ""}">${i <= o.st ? "●" : "○"} ${s}</li>`).join("")}</ol>`) }
+        setInterval(() => { let ch = 0; O.forEach(o => { if (!o.m && o.st < 5) { o.st++; ch = 1 } }); if (ch) { sv("pz_o", O); if (tid && $("#md").classList.contains("on")) trk(tid) } }, 8000);
+        /* profil va admin */
+        function acct() { md(`<h3>Profil</h3><h4>Buyurtmalar tarixi</h4>${O.slice().reverse().map(o => `<div class="li"><span style="flex:1">${o.id} · ${fm(o.total)}</span><button class="btn gh" onclick="trk('${o.id}')">Kuzatish</button></div>`).join("") || "<p class='mu'>Hali buyurtma yo‘q</p>"}<h4>Sevimlilar</h4><p class="mu">${F.map(id => M.find(x => x.id == id)).filter(Boolean).map(p => esc(p.n)).join(", ") || "—"}</p><button class="btn gh" onclick="adm()">Admin panel</button>`) }
+        function adm() {
+            if (!ok) { if (prompt("Admin paroli (demo: admin)") !== "admin") return toast("Parol noto‘g‘ri"); ok = 1 }
+            md(`<h3>Admin panel</h3><p class="mu">Demo: ma‘lumotlar faqat shu brauzerda saqlanadi.</p><h4>Yangi mahsulot</h4><input id="an" placeholder="Nomi"><input id="ap" type="number" placeholder="Narxi (so‘m)"><select id="ac">${cats.slice(1).map(c => `<option>${c}</option>`).join("")}</select><input id="ai" placeholder="Tarkibi"><button class="btn or" onclick="addP()">Qo‘shish</button>
+<h4>Menyu</h4>${M.map(p => `<div class="li"><span style="flex:1">${esc(p.n)} · ${fm(p.p)}</span><button onclick="edP(${p.id})" aria-label="Narxni o‘zgartirish">✎</button><button onclick="delP(${p.id})" aria-label="O‘chirish">🗑</button></div>`).join("")}
+<h4>Buyurtmalar</h4>${O.map(o => `<div class="li"><span style="flex:1">${o.id} · ${esc(o.name)} · ${fm(o.total)}</span><select onchange="stS('${o.id}',this.value)">${ST.map((s, i) => `<option value="${i}" ${i == o.st ? "selected" : ""}>${s}</option>`).join("")}</select></div>`).join("") || "<p class='mu'>Buyurtma yo‘q</p>"}`)
+        }
+        function addP() { const n = $("#an").value.trim(), p = +$("#ap").value; if (!n || p <= 0) return toast("Nom va narxni kiriting"); M.push({ id: Date.now(), n, c: $("#ac").value, i: $("#ai").value || "—", p, r: 5, v: 0, k: "#b3261e", t: "Yangi", e: NP.includes($("#ac").value) ? "🥤" : "" }); sv("pz_m", M); rm(); adm() }
+        function delP(id) { M = M.filter(x => x.id != id); sv("pz_m", M); rm(); rc(); adm() }
+        function edP(id) { const p = M.find(x => x.id == id), v = +prompt("Yangi narx (so‘m)", p.p); if (v > 0) { p.p = v; sv("pz_m", M); rm(); adm() } }
+        function stS(id, v) { const o = O.find(x => x.id == id); o.st = +v; o.m = 1; sv("pz_o", O) }
+        /* intro va qor */
+        $("#ipc").innerHTML = M0.filter(p => p.c == "Kombo").map((p, i) => `<div class="gl pr" style="animation-delay:${i * .3 + .4}s"><span class="tag">-${pc(p)}%</span>${img(p)}<b>${p.n}</b><div class="mu">${p.i}</div><div class="old">${fm(p.o)}</div><b class="st">${fm(p.p)}</b></div>`).join("");
+        $("#hp").innerHTML = `<img class="hi" src="${HERO}" alt="Pitsa" onerror="this.outerHTML=pz('#b3261e')">`;
+        function cdt() { const n = new Date, t = new Date(n.getFullYear() + 1, 0, 1) - n, m = Math.floor(t / 6e4); $("#cd").textContent = `${Math.floor(m / 1440)}d ${Math.floor(m / 60) % 24}h ${m % 60}m` } cdt(); setInterval(cdt, 1000);
+        let it = setTimeout(endIntro, 6000); function endIntro() { clearTimeout(it); const e = $("#intro"); if (!e) return; e.classList.add("out"); setTimeout(() => e.remove(), 900) }
+        const cv = $("#snow"), cx = cv.getContext("2d"); let W, H; const rs = () => { W = cv.width = innerWidth; H = cv.height = innerHeight }; rs(); addEventListener("resize", rs);
+        if (!matchMedia("(prefers-reduced-motion:reduce)").matches) {
+            const FL = Array.from({ length: 70 }, () => ({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 2.5 + .8, s: Math.random() + .4, g: Math.random() < .2 }));
+            (function a() { cx.clearRect(0, 0, W, H); FL.forEach(f => { cx.fillStyle = f.g ? "rgba(255,200,90,.7)" : "rgba(255,255,255,.8)"; cx.beginPath(); cx.arc(f.x, f.y, f.r, 0, 7); cx.fill(); f.y += f.s; f.x += Math.sin(f.y / 40) * .4; if (f.y > H) { f.y = -5; f.x = Math.random() * W } }); requestAnimationFrame(a) })()
+        }
+        /* footer statistikasi */
+        $("#fs").innerHTML = [["Bajarilgan buyurtmalar", 12480], ["Bugungi aksiya qoldig‘i", 25], ["Tashkil topgan yil", 2019], ["Filiallar", 2]].map(s => `<div><div class="n" data-n="${s[1]}">0</div><div class="mu">${s[0]}</div></div>`).join("");
+        new IntersectionObserver((e, ob) => { if (!e[0].isIntersecting) return; ob.disconnect(); document.querySelectorAll(".n").forEach(el => { const to = +el.dataset.n; let i = 0; const t = setInterval(() => { i++; el.textContent = Math.round(to * i / 40).toLocaleString("ru-RU").replace(/\s/g, to == 2019 ? "" : " "); if (i >= 40) clearInterval(t) }, 30) }) }).observe($("#ft"));
+        rm(); rc();
+    </script>
+</body>
+
+</html>
